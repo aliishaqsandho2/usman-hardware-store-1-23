@@ -657,143 +657,205 @@ const ThemeBuilder = () => {
   }, {} as Record<string, typeof features>);
 
   return (
-    
-    <div className="min-h-screen bg-gray-950 py-20 px-4">
+    <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="max-w-6xl mx-auto">
-        {/* Progress Header */}
-        <div className="mb-8">
-          <div className="text-center mb-6">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
-              Custom Theme Builder
-            </h1>
-            <p className="text-gray-400 text-lg">Create your perfect website theme with our advanced customization options</p>
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        {/* Hero Header */}
+        <div className="text-center mb-12 py-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-primary text-sm font-medium mb-6">
+            <Palette className="w-4 h-4" />
+            Professional Theme Builder
           </div>
+          <h1 className="text-5xl md:text-6xl font-bold text-gradient mb-4">
+            Build Your Perfect Theme
+          </h1>
+          <p className="text-muted-foreground text-xl max-w-2xl mx-auto leading-relaxed">
+            Create stunning, custom website themes in minutes with our intelligent builder. 
+            No coding required—just your vision brought to life.
+          </p>
+        </div>
           
-          {/* Desktop Steps - Show all steps */}
-          <div className="hidden lg:flex justify-between items-center mb-4">
-            {steps.map((step, index) => (
-              <div key={step.number} className={`flex items-center ${index < steps.length - 1 ? 'flex-1' : ''}`}>
-                <div className={`flex flex-col items-center ${currentStep >= step.number ? 'text-blue-400' : 'text-gray-500'}`}>
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold mb-2 ${
-                    currentStep >= step.number ? 'bg-blue-500 text-white' : 'bg-gray-700 text-gray-400'
+          {/* Enhanced Desktop Progress */}
+          <div className="hidden lg:block mb-12">
+            <div className="flex justify-between items-start relative">
+              {/* Progress Line */}
+              <div className="absolute top-6 left-0 w-full h-0.5 bg-border"></div>
+              <div 
+                className="absolute top-6 left-0 h-0.5 bg-primary transition-all duration-500 ease-out"
+                style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
+              ></div>
+              
+              {steps.map((step, index) => (
+                <div key={step.number} className="flex flex-col items-center relative bg-background px-4">
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center font-semibold transition-all duration-300 ${
+                    currentStep >= step.number 
+                      ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/25 scale-110' 
+                      : currentStep === step.number - 1
+                      ? 'bg-primary/20 text-primary border-2 border-primary'
+                      : 'bg-muted text-muted-foreground'
                   }`}>
-                    {step.number}
-                  </div>
-                  <div className="text-center">
-                    <div className="font-medium text-sm text-white">{step.title}</div>
-                    <div className="text-xs text-gray-400">{step.description}</div>
-                  </div>
-                </div>
-                {index < steps.length - 1 && (
-                  <div className={`flex-1 h-1 mx-4 rounded ${
-                    currentStep > step.number ? 'bg-blue-500' : 'bg-gray-700'
-                  }`} />
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Tablet Steps - Show 3 steps centered around current */}
-          <div className="hidden md:flex lg:hidden justify-center items-center mb-4">
-            <div className="flex items-center space-x-4">
-              {(() => {
-                const startIndex = Math.max(0, Math.min(currentStep - 2, steps.length - 3));
-                const endIndex = Math.min(startIndex + 3, steps.length);
-                const visibleSteps = steps.slice(startIndex, endIndex);
-                
-                return visibleSteps.map((step, index) => (
-                  <div key={step.number} className="flex items-center">
-                    <div className={`flex flex-col items-center ${currentStep >= step.number ? 'text-blue-400' : 'text-gray-500'}`}>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold mb-1 ${
-                        currentStep >= step.number ? 'bg-blue-500 text-white' : 'bg-gray-700 text-gray-400'
-                      }`}>
-                        {step.number}
-                      </div>
-                      <div className="text-center">
-                        <div className="font-medium text-xs text-white">{step.title}</div>
-                      </div>
-                    </div>
-                    {index < visibleSteps.length - 1 && (
-                      <div className={`w-8 h-1 mx-2 rounded ${
-                        currentStep > step.number ? 'bg-blue-500' : 'bg-gray-700'
-                      }`} />
+                    {currentStep > step.number ? (
+                      <CheckCircle className="w-6 h-6" />
+                    ) : (
+                      step.number
                     )}
                   </div>
-                ));
-              })()}
+                  <div className="text-center mt-3 max-w-32">
+                    <div className={`font-medium text-sm transition-colors ${
+                      currentStep >= step.number ? 'text-primary' : 'text-muted-foreground'
+                    }`}>
+                      {step.title}
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-1 leading-tight">
+                      {step.description}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Mobile Steps - Show only current step */}
-          <div className="md:hidden mb-4">
-            <div className="flex flex-col items-center">
-              <div className="flex items-center mb-3">
-                <div className="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-lg">
+          {/* Enhanced Tablet Progress */}
+          <div className="hidden md:block lg:hidden mb-8">
+            <div className="glass-card p-6">
+              <div className="flex items-center justify-center space-x-6">
+                {(() => {
+                  const startIndex = Math.max(0, Math.min(currentStep - 2, steps.length - 3));
+                  const endIndex = Math.min(startIndex + 3, steps.length);
+                  const visibleSteps = steps.slice(startIndex, endIndex);
+                  
+                  return visibleSteps.map((step, index) => (
+                    <div key={step.number} className="flex items-center">
+                      <div className="flex flex-col items-center">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold mb-2 transition-all duration-300 ${
+                          currentStep >= step.number 
+                            ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/25' 
+                            : 'bg-muted text-muted-foreground'
+                        }`}>
+                          {currentStep > step.number ? (
+                            <CheckCircle className="w-5 h-5" />
+                          ) : (
+                            step.number
+                          )}
+                        </div>
+                        <div className="text-center max-w-20">
+                          <div className={`font-medium text-xs transition-colors ${
+                            currentStep >= step.number ? 'text-primary' : 'text-muted-foreground'
+                          }`}>
+                            {step.title}
+                          </div>
+                        </div>
+                      </div>
+                      {index < visibleSteps.length - 1 && (
+                        <div className={`w-8 h-0.5 mx-3 rounded transition-colors ${
+                          currentStep > step.number ? 'bg-primary' : 'bg-border'
+                        }`} />
+                      )}
+                    </div>
+                  ));
+                })()}
+              </div>
+            </div>
+          </div>
+
+          {/* Enhanced Mobile Progress */}
+          <div className="md:hidden mb-8">
+            <div className="glass-card p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg transition-all duration-300 ${
+                  'bg-primary text-primary-foreground shadow-lg shadow-primary/25'
+                }`}>
                   {currentStep}
                 </div>
-                <div className="ml-4">
-                  <div className="font-semibold text-white text-lg">{steps[currentStep - 1].title}</div>
-                  <div className="text-gray-400 text-sm">{steps[currentStep - 1].description}</div>
+                <div className="flex-1 ml-4">
+                  <div className="font-semibold text-foreground text-lg">{steps[currentStep - 1].title}</div>
+                  <div className="text-muted-foreground text-sm">{steps[currentStep - 1].description}</div>
                 </div>
               </div>
               
-              {/* Mobile Step Dots */}
-              <div className="flex space-x-2">
-                {steps.map((step) => (
-                  <div
-                    key={step.number}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      currentStep >= step.number ? 'bg-blue-500' : 'bg-gray-600'
-                    }`}
-                  />
-                ))}
-              </div>
-              
-              {/* Mobile Step Counter */}
-              <div className="mt-2 text-sm text-gray-400">
-                Step {currentStep} of {steps.length}
+              {/* Enhanced Mobile Progress Bar */}
+              <div className="space-y-3">
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>Step {currentStep} of {steps.length}</span>
+                  <span>{Math.round((currentStep / steps.length) * 100)}% Complete</span>
+                </div>
+                <div className="flex space-x-1">
+                  {steps.map((step) => (
+                    <div
+                      key={step.number}
+                      className={`flex-1 h-2 rounded-full transition-all duration-500 ${
+                        currentStep >= step.number ? 'bg-primary' : 'bg-muted'
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-          
-          <Progress value={(currentStep / 5) * 100} className="w-full bg-gray-800" />
-        </div>
-
-        {/* Form Content */}
-        <Card className="bg-gray-900/50 backdrop-blur-sm shadow-xl border-gray-800">
-          <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
-            <CardTitle className="text-2xl">{steps[currentStep - 1].title}</CardTitle>
-            <CardDescription className="text-blue-100">{steps[currentStep - 1].description}</CardDescription>
+        
+        {/* Enhanced Form Content */}
+        <Card className="glass-card border-0 shadow-2xl overflow-hidden">
+          <CardHeader className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-primary-foreground py-8">
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Cpath d=%22M0 0h100v100H0z%22 fill=%22none%22/%3E%3Cpath d=%22M0 0l100 100M100 0L0 100%22 stroke=%22rgba(255,255,255,0.1)%22 stroke-width=%220.5%22/%3E%3C/svg%3E')] opacity-20"></div>
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center">
+                  <span className="font-bold text-lg">{currentStep}</span>
+                </div>
+                <div>
+                  <CardTitle className="text-2xl font-bold">{steps[currentStep - 1].title}</CardTitle>
+                  <CardDescription className="text-primary-foreground/80 text-base">
+                    {steps[currentStep - 1].description}
+                  </CardDescription>
+                </div>
+              </div>
+            </div>
           </CardHeader>
           
-          <CardContent className="p-8">
-            {/* Step 1: Basic Information */}
+          <CardContent className="p-8 bg-background/50">
+            {/* Step 1: Enhanced Basic Information */}
             {currentStep === 1 && (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <Label htmlFor="websiteName" className="text-base font-semibold text-white">Website Name *</Label>
+              <div className="space-y-8">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full text-primary text-sm mb-4">
+                    <Globe className="w-4 h-4" />
+                    Tell us about your project
+                  </div>
+                  <p className="text-muted-foreground">
+                    Let's start with the basics. This information helps us understand your vision and create the perfect theme for your needs.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <Label htmlFor="websiteName" className="text-base font-semibold flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-primary"></div>
+                      Website Name *
+                    </Label>
                     <Input
                       id="websiteName"
                       value={formData.websiteName}
                       onChange={(e) => handleInputChange('websiteName', e.target.value)}
-                      placeholder="Enter your website name"
-                      className="mt-2 bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
+                      placeholder="e.g., TechCorp Solutions, Creative Studio, etc."
+                      className="h-12 text-base transition-all duration-200 focus:scale-[1.02] focus:shadow-lg"
                     />
+                    <p className="text-xs text-muted-foreground">This will be the main name displayed on your website</p>
                   </div>
-                  <div>
-                    <Label htmlFor="websiteType" className="text-base font-semibold text-white">Website Type *</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="websiteType" className="text-base font-semibold flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-primary"></div>
+                      Website Type *
+                    </Label>
                     <Select onValueChange={(value) => handleInputChange('websiteType', value)}>
-                      <SelectTrigger className="mt-2 bg-gray-800 border-gray-700 text-white">
-                        <SelectValue placeholder="Select website type" />
+                      <SelectTrigger className="h-12 text-base transition-all duration-200 hover:scale-[1.01]">
+                        <SelectValue placeholder="Choose your website category" />
                       </SelectTrigger>
-                      <SelectContent className="bg-gray-800 border-gray-700">
-                        <SelectItem value="business">Business/Corporate</SelectItem>
-                        <SelectItem value="portfolio">Portfolio</SelectItem>
-                        <SelectItem value="blog">Blog/News</SelectItem>
-                        <SelectItem value="ecommerce">E-commerce</SelectItem>
-                        <SelectItem value="landing">Landing Page</SelectItem>
+                      <SelectContent>
+                        <SelectItem value="business">🏢 Business/Corporate</SelectItem>
+                        <SelectItem value="portfolio">🎨 Portfolio</SelectItem>
+                        <SelectItem value="blog">📝 Blog/News</SelectItem>
+                        <SelectItem value="ecommerce">🛒 E-commerce</SelectItem>
+                        <SelectItem value="landing">🚀 Landing Page</SelectItem>
                         <SelectItem value="nonprofit">Non-profit</SelectItem>
                         <SelectItem value="personal">Personal</SelectItem>
                         <SelectItem value="educational">Educational</SelectItem>
@@ -802,36 +864,47 @@ const ThemeBuilder = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <Label htmlFor="industry" className="text-base font-semibold text-white">Industry *</Label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <Label htmlFor="industry" className="text-base font-semibold flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-primary"></div>
+                      Industry *
+                    </Label>
                     <Select onValueChange={(value) => handleInputChange('industry', value)}>
-                      <SelectTrigger className="mt-2 bg-gray-800 border-gray-700 text-white">
-                        <SelectValue placeholder="Select your industry" />
+                      <SelectTrigger className="h-12 text-base transition-all duration-200 hover:scale-[1.01]">
+                        <SelectValue placeholder="What industry are you in?" />
                       </SelectTrigger>
-                      <SelectContent className="max-h-60 overflow-y-auto bg-gray-800 border-gray-700">
+                      <SelectContent className="max-h-60 overflow-y-auto">
                         {industries.map((industry) => (
-                          <SelectItem key={industry} value={industry.toLowerCase().replace(/\s+/g, '-')}>
+                          <SelectItem key={industry} value={industry.toLowerCase().replace(/\s+/g, '-')} className="text-base">
                             {industry}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
+                    <p className="text-xs text-muted-foreground">This helps us suggest industry-specific features</p>
                   </div>
-                  <div>
-                    <Label htmlFor="targetAudience" className="text-base font-semibold text-white">Target Audience</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="targetAudience" className="text-base font-semibold flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-secondary"></div>
+                      Target Audience
+                    </Label>
                     <Input
                       id="targetAudience"
                       value={formData.targetAudience}
                       onChange={(e) => handleInputChange('targetAudience', e.target.value)}
                       placeholder="e.g., Young professionals, families, seniors"
-                      className="mt-2 bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
+                      className="h-12 text-base transition-all duration-200 focus:scale-[1.02] focus:shadow-lg"
                     />
+                    <p className="text-xs text-muted-foreground">Who are you trying to reach with your website?</p>
                   </div>
                 </div>
 
-                <div>
-                  <Label htmlFor="businessDescription" className="text-base font-semibold text-white">Business Description</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="businessDescription" className="text-base font-semibold flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-accent"></div>
+                    Business Description
+                  </Label>
                   <textarea
                     id="businessDescription"
                     value={formData.businessDescription}
@@ -1601,9 +1674,7 @@ const ThemeBuilder = () => {
           </CardContent>
         </Card>
       </div>
-      
     </div>
-    
   );
 };
 
