@@ -1055,37 +1055,82 @@ const ThemeBuilder = () => {
               </div>
             )}
 
-            {/* Step 3: Features & Functionality */}
+            {/* Step 3: Enhanced Features & Functionality */}
             {currentStep === 3 && (
-              <div className="space-y-6">
-                <div className="text-center mb-6">
-                  <h3 className="text-lg font-semibold mb-2 text-white">Select the features you need for your website</h3>
-                  <p className="text-gray-400">Choose from our comprehensive list of features organized by category</p>
+              <div className="space-y-8">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full text-primary text-sm mb-4">
+                    <Magnet className="w-4 h-4" />
+                    Features & Functionality
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2">Select the features you need for your website</h3>
+                  <p className="text-muted-foreground max-w-2xl mx-auto">
+                    Choose from our comprehensive collection of features. Select only what you need—you can always add more later.
+                  </p>
                 </div>
 
                 <Tabs defaultValue="Core" className="w-full">
-                  <TabsList className="flex w-full overflow-x-auto whitespace-nowrap gap-2 bg-gray-800">
-                    {Object.keys(groupedFeatures).slice(0, 8).map((category) => (
-                      <TabsTrigger key={category} value={category} className="text-xs data-[state=active]:bg-blue-600">
-                        {category}
-                      </TabsTrigger>
-                    ))}
-                  </TabsList>
+                  {/* Beautiful Tab Navigation - No Scroll */}
+                  <div className="mb-8">
+                    <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 gap-2 bg-transparent p-1 h-auto">
+                      {Object.keys(groupedFeatures).slice(0, 8).map((category) => (
+                        <TabsTrigger 
+                          key={category} 
+                          value={category} 
+                          className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground 
+                                   bg-muted/50 hover:bg-muted text-muted-foreground
+                                   rounded-lg py-3 px-4 text-sm font-medium transition-all duration-200
+                                   hover:scale-105 data-[state=active]:scale-105 data-[state=active]:shadow-lg"
+                        >
+                          {category}
+                        </TabsTrigger>
+                      ))}
+                    </TabsList>
+                  </div>
                   
+                  {/* Feature Cards */}
                   {Object.entries(groupedFeatures).slice(0, 8).map(([category, features]) => (
-                    <TabsContent key={category} value={category} className="mt-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <TabsContent key={category} value={category} className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                         {features.map((feature) => (
-                          <div key={feature.name} className="flex items-center space-x-3 p-3 border border-gray-700 rounded-lg hover:bg-gray-800/50 bg-gray-900/50">
-                            <Checkbox
-                              id={feature.name}
-                              checked={formData.selectedFeatures.includes(feature.name)}
-                              onCheckedChange={() => handleCheckboxChange('selectedFeatures', feature.name)}
-                            />
-                            <feature.icon size={16} className="text-blue-400" />
-                            <Label htmlFor={feature.name} className="text-sm font-medium cursor-pointer flex-1 text-white">
-                              {feature.name}
-                            </Label>
+                          <div 
+                            key={feature.name} 
+                            className={`group relative p-4 rounded-xl border transition-all duration-200 cursor-pointer
+                              hover:shadow-lg hover:scale-[1.02] ${
+                              formData.selectedFeatures.includes(feature.name)
+                                ? 'border-primary bg-primary/5 shadow-md' 
+                                : 'border-border bg-card hover:border-primary/50'
+                            }`}
+                            onClick={() => handleCheckboxChange('selectedFeatures', feature.name)}
+                          >
+                            <div className="flex items-start gap-3">
+                              <Checkbox
+                                id={feature.name}
+                                checked={formData.selectedFeatures.includes(feature.name)}
+                                className="mt-1"
+                                onCheckedChange={() => {}}
+                              />
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <feature.icon size={18} className={`${
+                                    formData.selectedFeatures.includes(feature.name) 
+                                      ? 'text-primary' 
+                                      : 'text-muted-foreground group-hover:text-primary'
+                                  } transition-colors`} />
+                                  <h4 className="font-medium leading-tight">{feature.name}</h4>
+                                </div>
+                                <Badge variant="outline" className="text-xs">
+                                  {feature.category}
+                                </Badge>
+                              </div>
+                            </div>
+                            
+                            {/* Selection indicator */}
+                            {formData.selectedFeatures.includes(feature.name) && (
+                              <div className="absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                                <CheckCircle className="w-4 h-4 text-primary-foreground" />
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>
@@ -1093,52 +1138,122 @@ const ThemeBuilder = () => {
                   ))}
                 </Tabs>
 
-                {/* Additional Categories */}
-                <div className="mt-8">
-                  <h4 className="text-md font-semibold mb-4 text-white">Additional Categories</h4>
-                  <Tabs defaultValue={Object.keys(groupedFeatures)[8]} className="w-full">
-                    <TabsList className="flex w-full overflow-x-auto whitespace-nowrap gap-2 bg-gray-800">
-                      {Object.keys(groupedFeatures).slice(8).map((category) => (
-                        <TabsTrigger key={category} value={category} className="text-xs data-[state=active]:bg-blue-600">
-                          {category}
-                        </TabsTrigger>
+                {/* Additional Categories - Redesigned */}
+                {Object.keys(groupedFeatures).length > 8 && (
+                  <div className="mt-12 p-6 bg-muted/20 rounded-xl border">
+                    <h4 className="text-lg font-semibold mb-6 flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-secondary"></div>
+                      Specialized Features
+                    </h4>
+                    <Tabs defaultValue={Object.keys(groupedFeatures)[8]} className="w-full">
+                      <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2 bg-transparent p-1 h-auto mb-6">
+                        {Object.keys(groupedFeatures).slice(8).map((category) => (
+                          <TabsTrigger 
+                            key={category} 
+                            value={category}
+                            className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground 
+                                     bg-background hover:bg-muted text-muted-foreground
+                                     rounded-lg py-2 px-3 text-sm font-medium transition-all duration-200
+                                     hover:scale-105 data-[state=active]:scale-105"
+                          >
+                            {category}
+                          </TabsTrigger>
+                        ))}
+                      </TabsList>
+                      
+                      {Object.entries(groupedFeatures).slice(8).map(([category, features]) => (
+                        <TabsContent key={category} value={category}>
+                          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                            {features.map((feature) => (
+                              <div 
+                                key={feature.name} 
+                                className={`group relative p-4 rounded-xl border transition-all duration-200 cursor-pointer
+                                  hover:shadow-lg hover:scale-[1.02] ${
+                                  formData.selectedFeatures.includes(feature.name)
+                                    ? 'border-secondary bg-secondary/5 shadow-md' 
+                                    : 'border-border bg-card hover:border-secondary/50'
+                                }`}
+                                onClick={() => handleCheckboxChange('selectedFeatures', feature.name)}
+                              >
+                                <div className="flex items-start gap-3">
+                                  <Checkbox
+                                    id={feature.name}
+                                    checked={formData.selectedFeatures.includes(feature.name)}
+                                    className="mt-1"
+                                    onCheckedChange={() => {}}
+                                  />
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 mb-1">
+                                      <feature.icon size={18} className={`${
+                                        formData.selectedFeatures.includes(feature.name) 
+                                          ? 'text-secondary' 
+                                          : 'text-muted-foreground group-hover:text-secondary'
+                                      } transition-colors`} />
+                                      <h4 className="font-medium leading-tight">{feature.name}</h4>
+                                    </div>
+                                    <Badge variant="outline" className="text-xs">
+                                      {feature.category}
+                                    </Badge>
+                                  </div>
+                                </div>
+                                
+                                {formData.selectedFeatures.includes(feature.name) && (
+                                  <div className="absolute top-2 right-2 w-6 h-6 bg-secondary rounded-full flex items-center justify-center">
+                                    <CheckCircle className="w-4 h-4 text-secondary-foreground" />
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </TabsContent>
                       ))}
-                    </TabsList>
-                    
-                    {Object.entries(groupedFeatures).slice(8).map(([category, features]) => (
-                      <TabsContent key={category} value={category} className="mt-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                          {features.map((feature) => (
-                            <div key={feature.name} className="flex items-center space-x-3 p-3 border border-gray-700 rounded-lg hover:bg-gray-800/50 bg-gray-900/50">
-                              <Checkbox
-                                id={feature.name}
-                                checked={formData.selectedFeatures.includes(feature.name)}
-                                onCheckedChange={() => handleCheckboxChange('selectedFeatures', feature.name)}
-                              />
-                              <feature.icon size={16} className="text-blue-400" />
-                              <Label htmlFor={feature.name} className="text-sm font-medium cursor-pointer flex-1 text-white">
-                                {feature.name}
-                              </Label>
-                            </div>
-                          ))}
-                        </div>
-                      </TabsContent>
-                    ))}
-                  </Tabs>
-                </div>
+                    </Tabs>
+                  </div>
+                )}
 
-                <div className="mt-6 p-4 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                  <h4 className="font-semibold text-blue-400 mb-2">Selected Features</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {formData.selectedFeatures.map((feature) => (
-                      <Badge key={feature} variant="secondary" className="bg-blue-500/20 text-blue-300">
-                        {feature}
+                {/* Enhanced Selected Features Summary */}
+                <div className="glass-card p-6 border-primary/20">
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="font-semibold text-lg flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full bg-primary"></div>
+                      Selected Features
+                      <Badge variant="secondary" className="ml-2">
+                        {formData.selectedFeatures.length}
                       </Badge>
-                    ))}
-                    {formData.selectedFeatures.length === 0 && (
-                      <p className="text-gray-400 text-sm">No features selected yet</p>
+                    </h4>
+                    {formData.selectedFeatures.length > 0 && (
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => setFormData(prev => ({ ...prev, selectedFeatures: [] }))}
+                        className="text-muted-foreground hover:text-foreground"
+                      >
+                        Clear All
+                      </Button>
                     )}
                   </div>
+                  
+                  {formData.selectedFeatures.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {formData.selectedFeatures.map((feature) => (
+                        <Badge 
+                          key={feature} 
+                          variant="default" 
+                          className="bg-primary/10 text-primary hover:bg-primary/20 px-3 py-1 cursor-pointer transition-colors"
+                          onClick={() => handleCheckboxChange('selectedFeatures', feature)}
+                        >
+                          {feature}
+                          <button className="ml-2 hover:text-primary-foreground/70">×</button>
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <Magnet className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                      <p>No features selected yet</p>
+                      <p className="text-sm">Start by selecting features from the categories above</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
