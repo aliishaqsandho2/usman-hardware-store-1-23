@@ -1258,141 +1258,390 @@ const ThemeBuilder = () => {
               </div>
             )}
 
-            {/* Step 4: Layout & Structure + Module Selection */}
+            {/* Step 4: Enhanced Layout & Structure */}
             {currentStep === 4 && (
-              <div className="space-y-8">
-                <div>
-                  <Label className="text-base font-semibold mb-4 block text-white">Layout Style *</Label>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                    {layoutStyles.map((style) => (
+              <div className="space-y-10">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full text-primary text-sm mb-4">
+                    <Frame className="w-4 h-4" />
+                    Layout & Structure
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2">Design Your Website Structure</h3>
+                  <p className="text-muted-foreground max-w-2xl mx-auto">
+                    Choose the perfect layout and structure for your website. Visual previews help you see exactly how your site will look.
+                  </p>
+                </div>
+
+                {/* Layout Style with Visual Previews */}
+                <div className="space-y-6">
+                  <div className="text-center">
+                    <h4 className="text-xl font-semibold mb-2 flex items-center justify-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-primary"></div>
+                      Layout Style *
+                    </h4>
+                    <p className="text-muted-foreground">Choose the overall structure of your website</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {layoutStyles.map((style, index) => (
                       <div
                         key={style}
-                        className={`p-3 border-2 rounded-lg cursor-pointer transition-all hover:shadow-md text-center ${
-                          formData.layoutStyle === style ? 'border-blue-500 bg-blue-500/10' : 'border-gray-700 bg-gray-800/50'
+                        className={`group relative overflow-hidden rounded-xl border-2 cursor-pointer transition-all duration-300 hover:scale-105 ${
+                          formData.layoutStyle === style 
+                            ? 'border-primary bg-primary/5 shadow-lg shadow-primary/25' 
+                            : 'border-border bg-card hover:border-primary/50'
                         }`}
                         onClick={() => handleInputChange('layoutStyle', style)}
                       >
-                        <span className="text-sm font-medium text-white">{style}</span>
+                        {/* Visual Preview */}
+                        <div className="h-32 bg-gradient-to-br from-muted/50 to-muted/80 relative overflow-hidden">
+                          {/* Mock layout based on style */}
+                          {style === 'Single Page' && (
+                            <div className="absolute inset-2 space-y-1">
+                              <div className="h-3 bg-primary/30 rounded w-full"></div>
+                              <div className="h-6 bg-secondary/40 rounded w-full"></div>
+                              <div className="h-4 bg-accent/30 rounded w-3/4"></div>
+                              <div className="h-4 bg-accent/30 rounded w-1/2"></div>
+                            </div>
+                          )}
+                          {style === 'Multi-page Traditional' && (
+                            <div className="absolute inset-2 space-y-1">
+                              <div className="h-2 bg-primary/30 rounded w-full"></div>
+                              <div className="flex gap-1">
+                                <div className="h-4 bg-secondary/40 rounded flex-1"></div>
+                                <div className="h-4 bg-accent/30 rounded w-8"></div>
+                              </div>
+                              <div className="h-3 bg-muted-foreground/20 rounded w-full"></div>
+                              <div className="h-2 bg-muted-foreground/20 rounded w-full"></div>
+                            </div>
+                          )}
+                          {style === 'Sidebar Navigation' && (
+                            <div className="absolute inset-2 flex gap-1">
+                              <div className="w-6 bg-primary/30 rounded"></div>
+                              <div className="flex-1 space-y-1">
+                                <div className="h-2 bg-secondary/40 rounded w-full"></div>
+                                <div className="h-6 bg-accent/30 rounded w-full"></div>
+                                <div className="h-3 bg-muted-foreground/20 rounded w-3/4"></div>
+                              </div>
+                            </div>
+                          )}
+                          {(style !== 'Single Page' && style !== 'Multi-page Traditional' && style !== 'Sidebar Navigation') && (
+                            <div className="absolute inset-2 space-y-1">
+                              <div className="h-2 bg-primary/30 rounded w-full"></div>
+                              <div className="h-8 bg-secondary/40 rounded w-full"></div>
+                              <div className="grid grid-cols-2 gap-1 h-4">
+                                <div className="bg-accent/30 rounded"></div>
+                                <div className="bg-accent/30 rounded"></div>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {/* Selection indicator */}
+                          {formData.layoutStyle === style && (
+                            <div className="absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                              <CheckCircle className="w-4 h-4 text-primary-foreground" />
+                            </div>
+                          )}
+                        </div>
+                        
+                        {/* Style Info */}
+                        <div className="p-4">
+                          <h5 className="font-semibold text-center">{style}</h5>
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <Label className="text-base font-semibold mb-4 block text-white">Header Style</Label>
-                    <div className="space-y-2">
+                {/* Header, Footer & Animation Styles */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  {/* Header Styles */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg font-semibold flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-secondary"></div>
+                      Header Style
+                    </h4>
+                    <div className="space-y-3 max-h-80 overflow-y-auto pr-2">
                       {headerStyles.map((style) => (
                         <div
                           key={style}
-                          className={`p-2 border rounded cursor-pointer text-sm transition-all hover:shadow-sm ${
-                            formData.headerStyle === style ? 'border-blue-500 bg-blue-500/10' : 'border-gray-700 bg-gray-800/50'
+                          className={`group relative p-3 rounded-lg border cursor-pointer transition-all duration-200 hover:scale-[1.02] ${
+                            formData.headerStyle === style 
+                              ? 'border-secondary bg-secondary/5 shadow-md' 
+                              : 'border-border bg-card hover:border-secondary/50'
                           }`}
                           onClick={() => handleInputChange('headerStyle', style)}
                         >
-                          <span className="text-white">{style}</span>
+                          {/* Mini header preview */}
+                          <div className="h-4 bg-gradient-to-r from-secondary/20 to-secondary/10 rounded mb-2 relative overflow-hidden">
+                            <div className="absolute inset-1 flex items-center justify-between">
+                              <div className="w-2 h-1 bg-secondary/40 rounded"></div>
+                              <div className="flex gap-1">
+                                <div className="w-1 h-1 bg-secondary/30 rounded"></div>
+                                <div className="w-1 h-1 bg-secondary/30 rounded"></div>
+                                <div className="w-1 h-1 bg-secondary/30 rounded"></div>
+                              </div>
+                            </div>
+                          </div>
+                          <span className="text-sm font-medium">{style}</span>
+                          {formData.headerStyle === style && (
+                            <CheckCircle className="absolute top-2 right-2 w-4 h-4 text-secondary" />
+                          )}
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div>
-                    <Label className="text-base font-semibold mb-4 block text-white">Footer Style</Label>
-                    <div className="space-y-2">
+                  {/* Footer Styles */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg font-semibold flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-accent"></div>
+                      Footer Style
+                    </h4>
+                    <div className="space-y-3 max-h-80 overflow-y-auto pr-2">
                       {footerStyles.map((style) => (
                         <div
                           key={style}
-                          className={`p-2 border rounded cursor-pointer text-sm transition-all hover:shadow-sm ${
-                            formData.footerStyle === style ? 'border-blue-500 bg-blue-500/10' : 'border-gray-700 bg-gray-800/50'
+                          className={`group relative p-3 rounded-lg border cursor-pointer transition-all duration-200 hover:scale-[1.02] ${
+                            formData.footerStyle === style 
+                              ? 'border-accent bg-accent/5 shadow-md' 
+                              : 'border-border bg-card hover:border-accent/50'
                           }`}
                           onClick={() => handleInputChange('footerStyle', style)}
                         >
-                          <span className="text-white">{style}</span>
+                          {/* Mini footer preview */}
+                          <div className="h-4 bg-gradient-to-t from-accent/20 to-accent/10 rounded mb-2 relative overflow-hidden">
+                            <div className="absolute bottom-1 left-1 right-1 flex justify-between">
+                              <div className="w-2 h-1 bg-accent/40 rounded"></div>
+                              <div className="flex gap-1">
+                                <div className="w-1 h-1 bg-accent/30 rounded"></div>
+                                <div className="w-1 h-1 bg-accent/30 rounded"></div>
+                              </div>
+                            </div>
+                          </div>
+                          <span className="text-sm font-medium">{style}</span>
+                          {formData.footerStyle === style && (
+                            <CheckCircle className="absolute top-2 right-2 w-4 h-4 text-accent" />
+                          )}
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div>
-                    <Label className="text-base font-semibold mb-4 block text-white">Animation Style</Label>
-                    <div className="space-y-2">
+                  {/* Animation Styles */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg font-semibold flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-primary"></div>
+                      Animation Style
+                    </h4>
+                    <div className="space-y-3 max-h-80 overflow-y-auto pr-2">
                       {animationStyles.map((style) => (
                         <div
                           key={style}
-                          className={`p-2 border rounded cursor-pointer text-sm transition-all hover:shadow-sm ${
-                            formData.animationStyle === style ? 'border-blue-500 bg-blue-500/10' : 'border-gray-700 bg-gray-800/50'
+                          className={`group relative p-3 rounded-lg border cursor-pointer transition-all duration-200 hover:scale-[1.02] ${
+                            formData.animationStyle === style 
+                              ? 'border-primary bg-primary/5 shadow-md' 
+                              : 'border-border bg-card hover:border-primary/50'
                           }`}
                           onClick={() => handleInputChange('animationStyle', style)}
                         >
-                          <span className="text-white">{style}</span>
+                          {/* Animation preview indicator */}
+                          <div className="h-4 bg-gradient-to-r from-primary/10 to-primary/30 rounded mb-2 relative overflow-hidden">
+                            {style !== 'No Animation' && (
+                              <div className="absolute inset-1 flex items-center">
+                                <div className="w-1 h-1 bg-primary rounded-full animate-pulse"></div>
+                                <div className="w-1 h-1 bg-primary/60 rounded-full animate-pulse animation-delay-150 ml-1"></div>
+                                <div className="w-1 h-1 bg-primary/40 rounded-full animate-pulse animation-delay-300 ml-1"></div>
+                              </div>
+                            )}
+                          </div>
+                          <span className="text-sm font-medium">{style}</span>
+                          {formData.animationStyle === style && (
+                            <CheckCircle className="absolute top-2 right-2 w-4 h-4 text-primary" />
+                          )}
                         </div>
                       ))}
                     </div>
                   </div>
                 </div>
 
-                <div>
-                  <Label className="text-base font-semibold mb-4 block text-white">Content Sections</Label>
-                  <p className="text-gray-400 text-sm mb-4">Select the sections you want to include on your website</p>
-                  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                {/* Content Sections */}
+                <div className="glass-card p-6 space-y-6">
+                  <div className="text-center">
+                    <h4 className="text-xl font-semibold mb-2 flex items-center justify-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-secondary"></div>
+                      Content Sections
+                    </h4>
+                    <p className="text-muted-foreground">Select the sections you want to include on your website</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                     {contentSections.map((section) => (
-                      <div key={section} className="flex items-center space-x-2 p-2 border border-gray-700 rounded hover:bg-gray-800/50 bg-gray-900/50">
-                        <Checkbox
-                          id={section}
-                          checked={formData.contentSections.includes(section)}
-                          onCheckedChange={() => handleCheckboxChange('contentSections', section)}
-                        />
-                        <Label htmlFor={section} className="text-sm cursor-pointer text-white">
-                          {section}
-                        </Label>
+                      <div 
+                        key={section} 
+                        className={`group relative p-3 rounded-lg border cursor-pointer transition-all duration-200 hover:scale-[1.02] ${
+                          formData.contentSections.includes(section)
+                            ? 'border-secondary bg-secondary/5 shadow-md' 
+                            : 'border-border bg-card hover:border-secondary/50'
+                        }`}
+                        onClick={() => handleCheckboxChange('contentSections', section)}
+                      >
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id={section}
+                            checked={formData.contentSections.includes(section)}
+                            onCheckedChange={() => {}}
+                          />
+                          <span className="text-sm font-medium">{section}</span>
+                        </div>
+                        {formData.contentSections.includes(section) && (
+                          <div className="absolute top-1 right-1 w-4 h-4 bg-secondary rounded-full flex items-center justify-center">
+                            <CheckCircle className="w-3 h-3 text-secondary-foreground" />
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* NEW: Module Selection */}
-                <div>
-                  <Label className="text-base font-semibold mb-4 block text-white">Select Modules *</Label>
-                  <p className="text-gray-400 text-sm mb-4">Choose the specific modules you want to include in your theme</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {availableModules.map((module) => (
+                {/* Enhanced Module Selection */}
+                <div className="space-y-6">
+                  <div className="text-center">
+                    <h4 className="text-xl font-semibold mb-2 flex items-center justify-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-accent"></div>
+                      Select Modules *
+                    </h4>
+                    <p className="text-muted-foreground">Choose the specific modules you want to include in your theme</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {availableModules.map((module, index) => (
                       <div
                         key={module.name}
-                        className={`p-4 border-2 rounded-lg cursor-pointer transition-all hover:shadow-md ${
+                        className={`group relative overflow-hidden rounded-xl border-2 cursor-pointer transition-all duration-300 hover:scale-105 ${
                           formData.selectedModules.includes(module.name) 
-                            ? 'border-blue-500 bg-blue-500/10' 
-                            : 'border-gray-700 bg-gray-800/50'
+                            ? 'border-accent bg-accent/5 shadow-lg shadow-accent/25' 
+                            : 'border-border bg-card hover:border-accent/50'
                         }`}
                         onClick={() => handleCheckboxChange('selectedModules', module.name)}
                       >
-                        <div className="flex items-center space-x-3">
-                          <Checkbox
-                            id={module.name}
-                            checked={formData.selectedModules.includes(module.name)}
-                            onCheckedChange={() => handleCheckboxChange('selectedModules', module.name)}
-                          />
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-sm text-white">{module.displayName}</h3>
-                            <p className="text-xs text-gray-400 mt-1">{module.description}</p>
+                        {/* Module Visual Preview */}
+                        <div className="h-24 bg-gradient-to-br from-accent/10 to-accent/30 relative">
+                          {/* Different visual patterns for each module */}
+                          {module.name === 'blog' && (
+                            <div className="absolute inset-3 space-y-1">
+                              <div className="h-2 bg-accent/40 rounded w-3/4"></div>
+                              <div className="h-1 bg-accent/30 rounded w-full"></div>
+                              <div className="h-1 bg-accent/30 rounded w-2/3"></div>
+                              <div className="flex gap-1 mt-2">
+                                <div className="w-4 h-3 bg-accent/20 rounded"></div>
+                                <div className="flex-1 space-y-1">
+                                  <div className="h-1 bg-accent/20 rounded"></div>
+                                  <div className="h-1 bg-accent/20 rounded w-2/3"></div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                          {module.name === 'contact' && (
+                            <div className="absolute inset-3 space-y-1">
+                              <div className="h-1 bg-accent/30 rounded w-1/2"></div>
+                              <div className="grid grid-cols-2 gap-1">
+                                <div className="h-2 bg-accent/40 rounded"></div>
+                                <div className="h-2 bg-accent/40 rounded"></div>
+                              </div>
+                              <div className="h-3 bg-accent/30 rounded w-full"></div>
+                              <div className="h-2 bg-accent/50 rounded w-1/3 ml-auto"></div>
+                            </div>
+                          )}
+                          {module.name === 'gallery' && (
+                            <div className="absolute inset-3">
+                              <div className="grid grid-cols-3 gap-1 h-full">
+                                <div className="bg-accent/40 rounded"></div>
+                                <div className="bg-accent/30 rounded"></div>
+                                <div className="bg-accent/40 rounded"></div>
+                                <div className="bg-accent/30 rounded"></div>
+                                <div className="bg-accent/50 rounded"></div>
+                                <div className="bg-accent/30 rounded"></div>
+                              </div>
+                            </div>
+                          )}
+                          {(module.name !== 'blog' && module.name !== 'contact' && module.name !== 'gallery') && (
+                            <div className="absolute inset-3 space-y-1">
+                              <div className="h-2 bg-accent/40 rounded w-2/3"></div>
+                              <div className="h-3 bg-accent/30 rounded w-full"></div>
+                              <div className="h-1 bg-accent/20 rounded w-3/4"></div>
+                              <div className="h-1 bg-accent/20 rounded w-1/2"></div>
+                            </div>
+                          )}
+                          
+                          {formData.selectedModules.includes(module.name) && (
+                            <div className="absolute top-2 right-2 w-6 h-6 bg-accent rounded-full flex items-center justify-center">
+                              <CheckCircle className="w-4 h-4 text-accent-foreground" />
+                            </div>
+                          )}
+                        </div>
+                        
+                        {/* Module Info */}
+                        <div className="p-4">
+                          <div className="flex items-start gap-3">
+                            <Checkbox
+                              id={module.name}
+                              checked={formData.selectedModules.includes(module.name)}
+                              onCheckedChange={() => {}}
+                            />
+                            <div className="flex-1">
+                              <h5 className="font-semibold">{module.displayName}</h5>
+                              <p className="text-sm text-muted-foreground mt-1">{module.description}</p>
+                            </div>
                           </div>
                         </div>
                       </div>
                     ))}
                   </div>
                   
-                  {/* Selected Modules Summary */}
-                  <div className="mt-4 p-4 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                    <h4 className="font-semibold text-blue-400 mb-2">Selected Modules</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {formData.selectedModules.map((module) => (
-                        <Badge key={module} variant="secondary" className="bg-blue-500/20 text-blue-300">
-                          {availableModules.find(m => m.name === module)?.displayName || module}
+                  {/* Enhanced Selected Modules Summary */}
+                  <div className="glass-card p-6 border-accent/20">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="font-semibold text-lg flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-accent"></div>
+                        Selected Modules
+                        <Badge variant="secondary" className="ml-2">
+                          {formData.selectedModules.length}
                         </Badge>
-                      ))}
-                      {formData.selectedModules.length === 0 && (
-                        <p className="text-gray-400 text-sm">No modules selected yet</p>
+                      </h4>
+                      {formData.selectedModules.length > 0 && (
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => setFormData(prev => ({ ...prev, selectedModules: [] }))}
+                          className="text-muted-foreground hover:text-foreground"
+                        >
+                          Clear All
+                        </Button>
                       )}
                     </div>
+                    
+                    {formData.selectedModules.length > 0 ? (
+                      <div className="flex flex-wrap gap-2">
+                        {formData.selectedModules.map((module) => (
+                          <Badge 
+                            key={module} 
+                            variant="default" 
+                            className="bg-accent/10 text-accent hover:bg-accent/20 px-3 py-1 cursor-pointer transition-colors"
+                            onClick={() => handleCheckboxChange('selectedModules', module)}
+                          >
+                            {availableModules.find(m => m.name === module)?.displayName || module}
+                            <button className="ml-2 hover:text-accent-foreground/70">×</button>
+                          </Badge>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <Frame className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                        <p>No modules selected yet</p>
+                        <p className="text-sm">Choose modules from the options above</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
