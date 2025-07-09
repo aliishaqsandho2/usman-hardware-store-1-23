@@ -439,6 +439,9 @@ const ThemeBuilder = () => {
     try {
       const themeData = generateThemeJSON();
       
+      // Log the JSON being sent (for debugging)
+      console.log('Sending theme data:', themeData);
+      
       // Send POST request with the theme data
       const response = await fetch('/api/generate-theme', {
         method: 'POST',
@@ -448,22 +451,34 @@ const ThemeBuilder = () => {
         body: JSON.stringify(themeData)
       });
 
+      console.log('Response status:', response.status);
+      
       if (response.ok) {
+        const responseData = await response.json();
+        console.log('Response data:', responseData);
+        
         toast({
           title: "🎉 Theme Generated Successfully!",
           description: "Your custom theme has been created based on your preferences.",
           duration: 5000,
         });
       } else {
-        throw new Error('Failed to generate theme');
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error(`Failed to generate theme: ${response.status}`);
       }
     } catch (error) {
+      console.error('Theme generation error:', error);
+      
+      // Show the generated JSON in console for debugging
+      const themeData = generateThemeJSON();
+      console.log('Generated JSON that would have been sent:', JSON.stringify(themeData, null, 2));
+      
       toast({
         title: "Error",
-        description: "Failed to generate theme. Please try again.",
+        description: `Failed to generate theme. Please check the console for details.`,
         variant: "destructive",
       });
-      console.error('Theme generation error:', error);
     } finally {
       setIsGenerating(false);
     }
